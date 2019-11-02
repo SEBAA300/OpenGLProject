@@ -23,10 +23,23 @@ endif()
 
 # GLFW
 find_package(glfw3 REQUIRED)
+
+# Engine
+add_library(Engine SHARED Engine/engine.cpp)
+target_link_libraries(Engine glfw ${OPENGL_gl_LIBRARY})
+include_directories(${CMAKE_SOURCE_DIR}/Engine)
+link_directories(${CMAKE_SOURCE_DIR}/Engine)
+
 # Version number
 set (Game_Version_Majnor 0)
 set (Game_Version_Minorr 0)
 
 add_executable(Game main.cpp)
 
-target_link_libraries(Game ${OPENGL_gl_LIBRARY} glfw)
+target_link_libraries(Game ${OPENGL_gl_LIBRARY} glfw Engine)
+
+target_include_directories(Game PUBLIC
+                          "${PROJECT_BINARY_DIR}"
+													"${PROJECT_SOURCE_DIR}/Engine"
+													)
+
